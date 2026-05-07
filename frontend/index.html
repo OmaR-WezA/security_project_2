@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureMessenger V2 | Cryptography Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <!-- Load forge in head to ensure availability -->
+    <script src="https://cdn.jsdelivr.net/npm/node-forge@1.3.1/dist/forge.min.js"></script>
+</head>
+
+<body class="dark-theme">
+    <div id="app">
+        <header>
+            <div class="logo">
+                <h1><span class="shield-icon">🛡️</span>Secure<span>Messenger</span></h1>
+            </div>
+            <div id="user-info" class="hidden">
+                <span id="display-username"></span>
+                <span id="key-status"></span>
+                <button id="logout-btn" class="btn-small">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Auth Section -->
+            <section id="auth-section" class="card glass">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+
+                <form id="login-form" class="auth-form">
+                    <h2>Welcome Back</h2>
+                    <p>Enter your credentials to access your secure chats.</p>
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" id="login-username" placeholder="Enter username" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Sign In</button>
+                </form>
+
+                <form id="register-form" class="auth-form hidden">
+                    <h2>Create Account</h2>
+                    <p>Start messaging with end-to-end RSA encryption.</p>
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" id="reg-username" placeholder="Choose a username" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="reg-password" placeholder="Choose a strong password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Create Account</button>
+                </form>
+
+                <!-- Security Infrastructure Info -->
+                <div class="security-info-block"
+                    style="margin-top: 25px; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; opacity: 0.8;">
+                    <p style="color: #64ffda; margin-bottom: 5px;"><strong>System Security / أمن النظام</strong></p>
+                    <p>English: Protected by Asymmetric RSA & Bcrypt Hashing.</p>
+                    <p>عربي: محمي بواسطة تشفير RSA غير المتماثل وتقنية Bcrypt.</p>
+                </div>
+            </section>
+
+            <!-- App Section -->
+            <section id="app-section" class="hidden chat-container">
+                <div class="sidebar glass card">
+                    <h3>Contacts</h3>
+                    <ul id="user-list">
+                        <!-- Users will be loaded here -->
+                    </ul>
+                </div>
+
+                <div class="chat-window glass card">
+                    <div id="no-chat-selected" class="empty-state">
+                        <p>Select a contact to start secure messaging</p>
+                    </div>
+
+                    <div id="chat-active" class="hidden">
+                        <div class="chat-header">
+                            <h3 id="current-chat-user">Username</h3>
+                            <span class="badge">RSA-2048 Encrypted</span>
+                        </div>
+                        <div id="message-list" class="messages">
+                            <!-- Messages will be loaded here -->
+                        </div>
+                        <div class="message-input-area">
+                            <div class="input-wrapper">
+                                <textarea id="message-input" placeholder="Type a secure message..." rows="1"></textarea>
+                                <button id="send-btn">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="security-info">Messages are encrypted with receiver's public key before leaving
+                                your device.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="toast-container"></div>
+
+        <!-- RSA Key Modal -->
+        <div id="key-modal" class="modal hidden">
+            <div class="modal-content card glass">
+                <h2>Private Key Generated</h2>
+                <p>This is your RSA Private Key. <strong>Do not share it!</strong> You need it to decrypt received
+                    messages.</p>
+                <pre id="private-key-display"></pre>
+                <div class="modal-actions">
+                    <button id="copy-key-btn" class="btn-primary">Copy to Clipboard</button>
+                    <button id="download-key-btn" class="btn-primary secondary">Download .txt</button>
+                    <button id="close-modal-btn" class="btn-primary secondary">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
